@@ -1,3 +1,9 @@
+## [1.1.14](https://github.com/appium/appium-mcp/compare/v1.1.13...v1.1.14) (2025-11-21)
+
+### Bug Fixes
+
+* building and publishing of mcp into registry ([#45](https://github.com/appium/appium-mcp/issues/45)) ([f7ed734](https://github.com/appium/appium-mcp/commit/f7ed734149b18b813bf63d4ece9a16d6ee31ad64))
+
 ## [1.1.13](https://github.com/appium/appium-mcp/compare/v1.1.12...v1.1.13) (2025-11-21)
 
 ### Miscellaneous Chores
