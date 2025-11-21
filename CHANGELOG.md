@@ -1,3 +1,9 @@
+## [1.1.13](https://github.com/appium/appium-mcp/compare/v1.1.12...v1.1.13) (2025-11-21)
+
+### Miscellaneous Chores
+
+* integrate mcp and npm publishing actions ([#44](https://github.com/appium/appium-mcp/issues/44)) ([cad4af3](https://github.com/appium/appium-mcp/commit/cad4af3849fe3bbe780f2e780f72e14c399b2db6))
+
 ## [1.1.12](https://github.com/appium/appium-mcp/compare/v1.1.11...v1.1.12) (2025-11-21)
 
 ### Miscellaneous Chores
