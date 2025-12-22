@@ -1,3 +1,9 @@
+## [1.6.0](https://github.com/appium/appium-mcp/compare/v1.5.0...v1.6.0) (2025-12-22)
+
+### Features
+
+* **screenshot:** add configurable screenshot directory via SCREENSHOTS_DIR env var ([#54](https://github.com/appium/appium-mcp/issues/54)) ([f1957ad](https://github.com/appium/appium-mcp/commit/f1957ad0372d999db67f77b7b85a035546486b86))
+
 ## [1.5.0](https://github.com/appium/appium-mcp/compare/v1.4.0...v1.5.0) (2025-12-19)
 
 ### Features
