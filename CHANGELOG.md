@@ -1,3 +1,9 @@
+## [1.7.0](https://github.com/appium/appium-mcp/compare/v1.6.1...v1.7.0) (2026-01-05)
+
+### Features
+
+* Add interactive UI experiences to mcp ([#75](https://github.com/appium/appium-mcp/issues/75)) ([b0b49c7](https://github.com/appium/appium-mcp/commit/b0b49c7deec5eebaca7ac50060844cedcbf1d8b5))
+
 ## [1.6.1](https://github.com/appium/appium-mcp/compare/v1.6.0...v1.6.1) (2026-01-05)
 
 ### Bug Fixes
