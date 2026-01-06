@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/appium/appium-mcp/compare/v1.7.0...v1.7.1) (2026-01-06)
+
+### Bug Fixes
+
+* fix the scheme version for modelcontextprotocol ([#76](https://github.com/appium/appium-mcp/issues/76)) ([117112e](https://github.com/appium/appium-mcp/commit/117112e63528c2f413d6e355305473c283f103fb))
+
 ## [1.7.0](https://github.com/appium/appium-mcp/compare/v1.6.1...v1.7.0) (2026-01-05)
 
 ### Features
