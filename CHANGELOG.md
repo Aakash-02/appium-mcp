@@ -1,3 +1,15 @@
+## [1.7.2](https://github.com/appium/appium-mcp/compare/v1.7.1...v1.7.2) (2026-01-06)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @jest/globals from 29.7.0 to 30.2.0 ([#73](https://github.com/appium/appium-mcp/issues/73)) ([09ee332](https://github.com/appium/appium-mcp/commit/09ee332396a7b7241de8ebcbde4bed621fbcfc02))
+* **deps-dev:** bump @types/lodash from 4.17.17 to 4.17.21 ([#64](https://github.com/appium/appium-mcp/issues/64)) ([9fe0003](https://github.com/appium/appium-mcp/commit/9fe00032651a834927ac69278793ee44c5c847fa))
+* **deps-dev:** bump conventional-changelog-conventionalcommits ([#66](https://github.com/appium/appium-mcp/issues/66)) ([d029ebc](https://github.com/appium/appium-mcp/commit/d029ebce98439c281130745bd2fc72d7b705b76a))
+* **deps-dev:** bump prettier from 3.5.3 to 3.7.4 ([#67](https://github.com/appium/appium-mcp/issues/67)) ([3293699](https://github.com/appium/appium-mcp/commit/32936992d71f15d989b07a7deec2f267efb5af7a))
+* **deps-dev:** bump typescript from 5.8.3 to 5.9.3 ([#70](https://github.com/appium/appium-mcp/issues/70)) ([a99cbfd](https://github.com/appium/appium-mcp/commit/a99cbfd71e2e68b6ea1dbd03ebfcd76d758f2c93))
+* **deps:** bump @opentelemetry/sdk-node from 0.206.0 to 0.208.0 ([#65](https://github.com/appium/appium-mcp/issues/65)) ([2afb160](https://github.com/appium/appium-mcp/commit/2afb160903495b65f3b80e77ba2fe528b4c742a9))
+* use prepare instead of prepublish to sync the version ([#77](https://github.com/appium/appium-mcp/issues/77)) ([401f04b](https://github.com/appium/appium-mcp/commit/401f04bff330276d57cdebb851b52e3972b687d4))
+
 ## [1.7.1](https://github.com/appium/appium-mcp/compare/v1.7.0...v1.7.1) (2026-01-06)
 
 ### Bug Fixes
