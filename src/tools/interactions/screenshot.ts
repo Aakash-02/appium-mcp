@@ -2,6 +2,7 @@ import { FastMCP } from 'fastmcp';
 import { getDriver, isRemoteDriverSession } from '../../session-store.js';
 import { writeFile, mkdir } from 'fs/promises';
 import { join, isAbsolute } from 'path';
+import * as os from 'node:os';
 import {
   createUIResource,
   createScreenshotViewerUI,
@@ -21,7 +22,7 @@ export function resolveScreenshotDir(): string {
   const screenshotDir = process.env.SCREENSHOTS_DIR;
 
   if (!screenshotDir) {
-    return process.cwd();
+    return os.tmpdir();
   }
 
   if (isAbsolute(screenshotDir)) {
