@@ -1,3 +1,9 @@
+## [1.8.2](https://github.com/appium/appium-mcp/compare/v1.8.1...v1.8.2) (2026-01-17)
+
+### Miscellaneous Chores
+
+* use appium's eslint rule ([#102](https://github.com/appium/appium-mcp/issues/102)) ([3f34d38](https://github.com/appium/appium-mcp/commit/3f34d381c3c521e701710f69c797137211484b85))
+
 ## [1.8.1](https://github.com/appium/appium-mcp/compare/v1.8.0...v1.8.1) (2026-01-17)
 
 ### Bug Fixes
