@@ -1,3 +1,9 @@
+## [1.8.6](https://github.com/appium/appium-mcp/compare/v1.8.5...v1.8.6) (2026-01-19)
+
+### Miscellaneous Chores
+
+* **deps:** bump appium-adb from 12.13.1 to 14.1.8 ([#68](https://github.com/appium/appium-mcp/issues/68)) ([e6406e9](https://github.com/appium/appium-mcp/commit/e6406e992892a57d41c723cf11c4f7654515c9e1))
+
 ## [1.8.5](https://github.com/appium/appium-mcp/compare/v1.8.4...v1.8.5) (2026-01-19)
 
 ### Miscellaneous Chores
