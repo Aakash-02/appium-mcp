@@ -1,5 +1,6 @@
 import { FastMCP } from 'fastmcp';
-import { getDriver, isRemoteDriverSession } from '../../session-store.js';
+import { getDriver } from '../../session-store.js';
+import type { NullableDriverInstance } from '../../session-store.js';
 import { writeFile, mkdir } from 'fs/promises';
 import { join, isAbsolute } from 'path';
 import * as os from 'node:os';
@@ -8,9 +9,7 @@ import {
   createScreenshotViewerUI,
   addUIResourceToResponse,
 } from '../../ui/mcp-ui-utils.js';
-import type { Client } from 'webdriver';
-import type { XCUITestDriver } from 'appium-xcuitest-driver';
-import type { AndroidUiautomator2Driver } from 'appium-uiautomator2-driver';
+import { getScreenshot } from '../../command.js';
 
 /**
  * Resolves the screenshot directory path.
@@ -33,7 +32,7 @@ export function resolveScreenshotDir(): string {
 }
 
 export interface ScreenshotDeps {
-  getDriver: () => Client | AndroidUiautomator2Driver | XCUITestDriver | null;
+  getDriver: () => NullableDriverInstance;
   writeFile: typeof writeFile;
   mkdir: typeof mkdir;
   resolveScreenshotDir: typeof resolveScreenshotDir;
@@ -57,9 +56,7 @@ export async function executeScreenshot(
   }
 
   try {
-    const screenshotBase64 = isRemoteDriverSession(driver)
-      ? await (driver as Client).takeScreenshot()
-      : await (driver as any).getScreenshot();
+    const screenshotBase64 = await getScreenshot(driver);
 
     // Convert base64 to buffer
     const screenshotBuffer = Buffer.from(screenshotBase64, 'base64');

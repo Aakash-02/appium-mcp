@@ -1,11 +1,7 @@
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
-import {
-  getDriver,
-  getPlatformName,
-  isRemoteDriverSession,
-} from '../../session-store.js';
-import type { Client } from 'webdriver';
+import { getDriver, getPlatformName, PLATFORM } from '../../session-store.js';
+import { execute } from '../../command.js';
 
 export default function uninstallApp(server: FastMCP): void {
   const schema = z.object({
@@ -27,12 +23,8 @@ export default function uninstallApp(server: FastMCP): void {
       try {
         const platform = getPlatformName(driver);
         const params =
-          platform === 'Android' ? { appId: id } : { bundleId: id };
-        const _ok = isRemoteDriverSession(driver)
-          ? await (driver as Client).executeScript('mobile: removeApp', [
-              params,
-            ])
-          : await (driver as any).execute('mobile: removeApp', params);
+          platform === PLATFORM.android ? { appId: id } : { bundleId: id };
+        await execute(driver, 'mobile: removeApp', params);
         return {
           content: [
             {

@@ -1,12 +1,8 @@
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
-import {
-  getDriver,
-  getPlatformName,
-  isRemoteDriverSession,
-} from '../../session-store.js';
+import { getDriver, getPlatformName, PLATFORM } from '../../session-store.js';
 import { elementUUIDScheme } from '../../schema.js';
-import type { Client } from 'webdriver';
+import { execute, getElementRect, performActions } from '../../command.js';
 
 export default function longPress(server: FastMCP): void {
   const longPressSchema = z.object({
@@ -41,12 +37,12 @@ export default function longPress(server: FastMCP): void {
         const platform = getPlatformName(driver);
         const duration = args.duration || 2000;
 
-        if (platform === 'Android') {
-          const rect = await (driver as any).getElementRect(args.elementUUID);
+        if (platform === PLATFORM.android) {
+          const rect = await getElementRect(driver, args.elementUUID);
           const x = Math.floor(rect.x + rect.width / 2);
           const y = Math.floor(rect.y + rect.height / 2);
 
-          await (driver as any).performActions([
+          const operation = [
             {
               type: 'pointer',
               id: 'finger1',
@@ -58,26 +54,20 @@ export default function longPress(server: FastMCP): void {
                 { type: 'pointerUp', button: 0 },
               ],
             },
-          ]);
-        } else if (platform === 'iOS') {
+          ];
+          await performActions(driver, operation);
+        } else if (platform === PLATFORM.ios) {
           try {
-            const _ok = isRemoteDriverSession(driver)
-              ? await (driver as Client).executeScript('mobile: touchAndHold', [
-                  {
-                    elementId: args.elementUUID,
-                    duration: duration / 1000,
-                  },
-                ])
-              : await (driver as any).execute('mobile: touchAndHold', {
-                  elementId: args.elementUUID,
-                  duration: duration / 1000,
-                });
+            await execute(driver, 'mobile: touchAndHold', {
+              elementId: args.elementUUID,
+              duration: duration / 1000,
+            });
           } catch (touchAndHoldError) {
-            const rect = await (driver as any).getElementRect(args.elementUUID);
+            const rect = await getElementRect(driver, args.elementUUID);
             const x = Math.floor(rect.x + rect.width / 2);
             const y = Math.floor(rect.y + rect.height / 2);
 
-            await (driver as any).performActions([
+            const operation = [
               {
                 type: 'pointer',
                 id: 'finger1',
@@ -89,7 +79,8 @@ export default function longPress(server: FastMCP): void {
                   { type: 'pointerUp', button: 0 },
                 ],
               },
-            ]);
+            ];
+            await performActions(driver, operation);
           }
         } else {
           throw new Error(

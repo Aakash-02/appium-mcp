@@ -10,15 +10,18 @@
  * For detailed documentation on adding tools, see docs/CONTRIBUTING.md
  */
 import { z } from 'zod';
-import { getDriver, isRemoteDriverSession } from '../../session-store.js';
+import {
+  getDriver,
+  isAndroidUiautomator2DriverSession,
+  isXCUITestDriverSession,
+} from '../../session-store.js';
 import { generateAllElementLocators } from '../../locators/generate-all-locators.js';
-import log from '../../logger.js';
 import {
   createUIResource,
   createLocatorGeneratorUI,
   addUIResourceToResponse,
 } from '../../ui/mcp-ui-utils.js';
-import type { Client } from 'webdriver';
+import { getPageSource } from '../../command.js';
 
 export default function generateLocators(server: any): void {
   server.addTool({
@@ -43,21 +46,20 @@ export default function generateLocators(server: any): void {
 
         try {
           // Get the page source from the driver
-          const pageSource = await (driver as any).getPageSource();
-          const driverName = isRemoteDriverSession(driver)
-            ? (driver as Client).capabilities[
-                'appium:automationName'
-              ]?.toLowerCase()
-            : (await (driver as any).caps.automationName).toLowerCase();
+          const pageSource = await getPageSource(driver);
+          let driverName;
+          if (isAndroidUiautomator2DriverSession(driver)) {
+            driverName = await driver.caps.automationName?.toLowerCase();
+          } else if (isXCUITestDriverSession(driver)) {
+            driverName = await driver.caps.automationName?.toLowerCase();
+          } else {
+            driverName =
+              await driver.capabilities['appium:automationName']?.toLowerCase();
+          }
           if (!pageSource) {
             throw new Error('Page source is empty or null');
           }
           const sampleXML = pageSource;
-          const allElements = generateAllElementLocators(
-            sampleXML,
-            true,
-            driverName
-          );
           const interactableElements = generateAllElementLocators(
             sampleXML,
             true,

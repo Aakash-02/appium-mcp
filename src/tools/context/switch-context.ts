@@ -1,11 +1,7 @@
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
-import {
-  getDriver,
-  getPlatformName,
-  isRemoteDriverSession,
-  PLATFORM,
-} from '../../session-store.js';
+import { getDriver, isRemoteDriverSession } from '../../session-store.js';
+import { getContexts, getCurrentContext, setContext } from '../../command.js';
 
 export default function switchContext(server: FastMCP): void {
   const schema = z.object({
@@ -39,8 +35,8 @@ export default function switchContext(server: FastMCP): void {
 
       try {
         const [currentContext, availableContexts] = await Promise.all([
-          (driver as any).getCurrentContext().catch(() => null),
-          (driver as any).getContexts().catch(() => []),
+          getCurrentContext(driver).catch(() => null),
+          getContexts(driver).catch(() => [] as string[]),
         ]);
 
         if (currentContext === args.context) {
@@ -77,10 +73,9 @@ export default function switchContext(server: FastMCP): void {
             isError: true,
           };
         }
-        await (driver as any).switchContext(args.context);
-
+        await setContext(driver, args.context);
         // Verify the switch was successful
-        const newContext = await (driver as any).getCurrentContext();
+        const newContext = await getCurrentContext(driver);
 
         return {
           content: [

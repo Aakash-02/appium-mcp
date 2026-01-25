@@ -1,8 +1,8 @@
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
-import { getDriver, isRemoteDriverSession } from '../../session-store.js';
+import { getDriver } from '../../session-store.js';
 import { elementUUIDScheme } from '../../schema.js';
-import type { Client } from 'webdriver';
+import { setValue as _setValue } from '../../command.js';
 
 export default function setValue(server: FastMCP): void {
   const setValueSchema = z.object({
@@ -25,12 +25,7 @@ export default function setValue(server: FastMCP): void {
       }
 
       try {
-        const _ok = isRemoteDriverSession(driver)
-          ? await (driver as Client).elementSendKeys(
-              args.elementUUID,
-              args.text
-            )
-          : await (driver as any).setValue(args.text, args.elementUUID);
+        await _setValue(driver, args.elementUUID, args.text);
         return {
           content: [
             {

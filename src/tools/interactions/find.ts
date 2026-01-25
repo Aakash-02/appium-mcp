@@ -34,15 +34,12 @@ export default function findElement(server: FastMCP): void {
       }
 
       try {
-        const element = await (driver as any).findElement(
-          args.strategy,
-          args.selector
-        );
+        const element = await driver.findElement(args.strategy, args.selector);
         return {
           content: [
             {
               type: 'text',
-              text: `Successfully found element ${args.selector} with strategy ${args.strategy}. Element id ${element.ELEMENT}`,
+              text: `Successfully found element ${args.selector} with strategy ${args.strategy}. Element id ${element['element-6066-11e4-a52e-4f735466cecf']}`,
             },
           ],
         };

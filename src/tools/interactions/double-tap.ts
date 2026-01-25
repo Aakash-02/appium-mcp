@@ -3,10 +3,12 @@ import { z } from 'zod';
 import {
   getDriver,
   getPlatformName,
-  isRemoteDriverSession,
+  isAndroidUiautomator2DriverSession,
+  PLATFORM,
 } from '../../session-store.js';
 import { elementUUIDScheme } from '../../schema.js';
 import type { Client } from 'webdriver';
+import { execute, getElementRect, performActions } from '../../command.js';
 
 export default function doubleTap(server: FastMCP): void {
   const doubleTapActionSchema = z.object({
@@ -29,22 +31,20 @@ export default function doubleTap(server: FastMCP): void {
 
       try {
         const platform = getPlatformName(driver);
-
-        if (platform === 'Android') {
+        if (platform === PLATFORM.android) {
           // Get element location for Android double tap
-          const element = await (driver as any).findElement(
-            'id',
-            args.elementUUID
+          const element = await driver.findElement('id', args.elementUUID);
+          const elementRect = await getElementRect(
+            driver,
+            element['element-6066-11e4-a52e-4f735466cecf']
           );
-          const location = await element.getLocation();
-          const size = await element.getSize();
 
           // Calculate center coordinates
-          const x = location.x + size.width / 2;
-          const y = location.y + size.height / 2;
+          const x = elementRect.x + elementRect.width / 2;
+          const y = elementRect.y + elementRect.height / 2;
 
           // Perform double tap using performActions
-          await (driver as any).performActions([
+          const operation = [
             {
               type: 'pointer',
               id: 'finger1',
@@ -60,16 +60,13 @@ export default function doubleTap(server: FastMCP): void {
                 { type: 'pointerUp', button: 0 },
               ],
             },
-          ]);
-        } else if (platform === 'iOS') {
+          ];
+          await performActions(driver, operation);
+        } else if (platform === PLATFORM.ios) {
           // Use iOS mobile: doubleTap execute method
-          const _ok = isRemoteDriverSession(driver)
-            ? await (driver as Client).executeScript('mobile: doubleTap', [
-                { elementId: args.elementUUID },
-              ])
-            : await (driver as any).execute('mobile: doubleTap', [
-                { elementId: args.elementUUID },
-              ]);
+          await execute(driver, 'mobile: doubleTap', {
+            elementId: args.elementUUID,
+          });
         } else {
           throw new Error(
             `Unsupported platform: ${platform}. Only Android and iOS are supported.`

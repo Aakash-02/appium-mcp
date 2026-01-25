@@ -1,6 +1,7 @@
 import { FastMCP } from 'fastmcp';
 import { getDriver } from '../../session-store.js';
 import { z } from 'zod';
+import { activateApp as _activateApp } from '../../command.js';
 
 export default function activateApp(server: FastMCP): void {
   const activateAppSchema = z.object({
@@ -22,7 +23,7 @@ export default function activateApp(server: FastMCP): void {
       }
 
       try {
-        await (driver as any).activateApp(args.id);
+        await _activateApp(driver, args.id);
         return {
           content: [
             {

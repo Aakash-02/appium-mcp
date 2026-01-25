@@ -7,6 +7,13 @@ let driver: any = null;
 let sessionId: string | null = null;
 let isDeletingSession = false; // Lock to prevent concurrent deletion
 
+// Type aliases for driver variants used throughout the project.
+export type DriverInstance =
+  | Client
+  | AndroidUiautomator2Driver
+  | XCUITestDriver;
+export type NullableDriverInstance = DriverInstance | null;
+
 export const PLATFORM = {
   android: 'Android',
   ios: 'iOS',
@@ -21,9 +28,7 @@ export const PLATFORM = {
  * @param driver - The driver instance to inspect (may be a Client, AndroidUiautomator2Driver, XCUITestDriver, or null).
  * @returns `true` if `driver` is non-null and has a string `sessionId`; otherwise `false`.
  */
-export function isRemoteDriverSession(
-  driver: Client | AndroidUiautomator2Driver | XCUITestDriver | null
-): boolean {
+export function isRemoteDriverSession(driver: NullableDriverInstance): boolean {
   if (driver) {
     return (
       !(driver instanceof AndroidUiautomator2Driver) &&
@@ -33,10 +38,42 @@ export function isRemoteDriverSession(
   return false;
 }
 
-export function setSession(
-  d: Client | AndroidUiautomator2Driver | XCUITestDriver,
-  id: string | null
-) {
+/**
+ * Type-guard that asserts the provided driver is an Android UiAutomator2 driver.
+ *
+ * Performs a runtime `instanceof` check. When this function returns `true`,
+ * TypeScript will narrow the variable's type to `AndroidUiautomator2Driver`.
+ * Use this helper to safely call Android-specific driver methods without
+ * casting.
+ *
+ * @param driver - The driver instance to test (may be a `Client`,
+ *   `AndroidUiautomator2Driver`, `XCUITestDriver`, or `null`).
+ * @returns `true` if `driver` is an `AndroidUiautomator2Driver`.
+ */
+export function isAndroidUiautomator2DriverSession(
+  driver: NullableDriverInstance
+): driver is AndroidUiautomator2Driver {
+  return driver instanceof AndroidUiautomator2Driver;
+}
+
+/**
+ * Type-guard that asserts the provided driver is an XCUITest (iOS) driver.
+ *
+ * Performs a runtime `instanceof` check and narrows the type to
+ * `XCUITestDriver` when true. This lets callers invoke iOS-specific driver
+ * APIs without explicit casts.
+ *
+ * @param driver - The driver instance to test (may be a `Client`,
+ *   `AndroidUiautomator2Driver`, `XCUITestDriver`, or `null`).
+ * @returns `true` if `driver` is an `XCUITestDriver`.
+ */
+export function isXCUITestDriverSession(
+  driver: NullableDriverInstance
+): driver is XCUITestDriver {
+  return driver instanceof XCUITestDriver;
+}
+
+export function setSession(d: DriverInstance, id: string | null) {
   driver = d;
   sessionId = id;
   // Reset deletion flag when setting a new session
@@ -45,10 +82,7 @@ export function setSession(
   }
 }
 
-export function getDriver():
-  | Client
-  | AndroidUiautomator2Driver
-  | XCUITestDriver {
+export function getDriver(): NullableDriverInstance {
   return driver;
 }
 

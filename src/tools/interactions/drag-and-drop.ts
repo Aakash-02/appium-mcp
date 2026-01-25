@@ -3,10 +3,13 @@ import { z } from 'zod';
 import {
   getDriver,
   getPlatformName,
+  isAndroidUiautomator2DriverSession,
   isRemoteDriverSession,
+  isXCUITestDriverSession,
 } from '../../session-store.js';
 import { elementUUIDScheme } from '../../schema.js';
 import type { Client } from 'webdriver';
+import { getElementRect, getWindowRect } from '../../command.js';
 
 const DROP_PAUSE_DURATION_MS = 150;
 
@@ -157,11 +160,8 @@ export default function dragAndDrop(server: FastMCP): void {
 
         let startX: number, startY: number;
         let endX: number, endY: number;
-
         if (args.sourceElementUUID) {
-          const rect = await (driver as any).getElementRect(
-            args.sourceElementUUID
-          );
+          const rect = await getElementRect(driver, args.sourceElementUUID);
           startX = Math.floor(rect.x + rect.width / 2);
           startY = Math.floor(rect.y + rect.height / 2);
         } else {
@@ -170,9 +170,7 @@ export default function dragAndDrop(server: FastMCP): void {
         }
 
         if (args.targetElementUUID) {
-          const rect = await (driver as any).getElementRect(
-            args.targetElementUUID
-          );
+          const rect = await getElementRect(driver, args.targetElementUUID);
           endX = Math.floor(rect.x + rect.width / 2);
           endY = Math.floor(rect.y + rect.height / 2);
         } else {
@@ -180,7 +178,7 @@ export default function dragAndDrop(server: FastMCP): void {
           endY = args.targetY;
         }
 
-        const { width, height } = await (driver as any).getWindowRect();
+        const { width, height } = await getWindowRect(driver);
         if (startX < 0 || startX >= width || startY < 0 || startY >= height) {
           throw new Error(
             `Source coordinates (${startX}, ${startY}) are out of screen bounds (${width}x${height})`

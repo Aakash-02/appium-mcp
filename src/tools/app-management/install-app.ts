@@ -1,11 +1,7 @@
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
-import {
-  getDriver,
-  getPlatformName,
-  isRemoteDriverSession,
-} from '../../session-store.js';
-import type { Client } from 'webdriver';
+import { getDriver, getPlatformName, PLATFORM } from '../../session-store.js';
+import { execute } from '../../command.js';
 
 export default function installApp(server: FastMCP): void {
   const schema = z.object({
@@ -25,12 +21,8 @@ export default function installApp(server: FastMCP): void {
       try {
         const platform = getPlatformName(driver);
         const params =
-          platform === 'Android' ? { appPath: path } : { app: path };
-        const _ok = isRemoteDriverSession(driver)
-          ? await (driver as Client).executeScript('mobile: installApp', [
-              params,
-            ])
-          : await (driver as any).execute('mobile: installApp', params);
+          platform === PLATFORM.android ? { appPath: path } : { app: path };
+        await execute(driver, 'mobile: installApp', params);
         return {
           content: [
             {

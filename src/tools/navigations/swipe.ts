@@ -1,12 +1,13 @@
 import { z } from 'zod';
-import {
-  getDriver,
-  getPlatformName,
-  isRemoteDriverSession,
-} from '../../session-store.js';
+import { getDriver, getPlatformName, PLATFORM } from '../../session-store.js';
 import log from '../../logger.js';
 import { elementUUIDScheme } from '../../schema.js';
-import type { Client } from 'webdriver';
+import {
+  execute,
+  getElementRect,
+  getWindowRect,
+  performActions,
+} from '../../command.js';
 
 function calculateSwipeCoordinates(
   direction: 'left' | 'right' | 'up' | 'down',
@@ -83,7 +84,7 @@ async function performiOSSwipe(
   duration: number
 ): Promise<void> {
   try {
-    await driver.execute('mobile: dragFromToForDuration', {
+    await execute(driver, 'mobile: dragFromToForDuration', {
       fromX: startX,
       fromY: startY,
       toX: endX,
@@ -192,7 +193,7 @@ export default function swipe(server: any): void {
 
         if (args.direction) {
           if (args.elementUUID) {
-            const rect = await (driver as any).getElementRect(args.elementUUID);
+            const rect = await getElementRect(driver, args.elementUUID);
             const elementCenterX = Math.floor(rect.x + rect.width / 2);
             const elementCenterY = Math.floor(rect.y + rect.height / 2);
 
@@ -232,7 +233,7 @@ export default function swipe(server: any): void {
               endY,
             });
           } else {
-            const { width, height } = await (driver as any).getWindowRect();
+            const { width, height } = await getWindowRect(driver);
             log.info('Device screen size:', { width, height });
             const coords = calculateSwipeCoordinates(
               args.direction,
@@ -270,10 +271,10 @@ export default function swipe(server: any): void {
           duration,
         });
 
-        if (platform === 'Android') {
+        if (platform === PLATFORM.android) {
           if (startX !== endX && Math.abs(startY - endY) < 50) {
             const swipeDuration = Math.min(duration, 400);
-            await (driver as any).performActions([
+            const operation = [
               {
                 type: 'pointer',
                 id: 'finger1',
@@ -292,7 +293,8 @@ export default function swipe(server: any): void {
                   { type: 'pointerUp', button: 0 },
                 ],
               },
-            ]);
+            ];
+            await performActions(driver, operation);
             log.info('Android horizontal swipe completed');
           } else {
             await performAndroidSwipe(
@@ -305,18 +307,12 @@ export default function swipe(server: any): void {
             );
           }
           log.info('Android swipe action completed successfully.');
-        } else if (platform === 'iOS') {
+        } else if (platform === PLATFORM.ios) {
           if (args.direction) {
             try {
-              const _ok = isRemoteDriverSession(driver)
-                ? await (driver as Client).executeScript('mobile: swipe', [
-                    {
-                      direction: args.direction,
-                    },
-                  ])
-                : await (driver as any).execute('mobile: swipe', {
-                    direction: args.direction,
-                  });
+              await execute(driver, 'mobile: swipe', {
+                direction: args.direction,
+              });
               log.info(
                 `iOS swipe completed using mobile: swipe (${args.direction})`
               );

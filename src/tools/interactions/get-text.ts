@@ -1,8 +1,8 @@
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
-import { getDriver, isRemoteDriverSession } from '../../session-store.js';
+import { getDriver } from '../../session-store.js';
 import { elementUUIDScheme } from '../../schema.js';
-import type { Client } from 'webdriver';
+import { getElementText } from '../../command.js';
 
 export default function getText(server: FastMCP): void {
   const getTextSchema = z.object({
@@ -24,9 +24,7 @@ export default function getText(server: FastMCP): void {
       }
 
       try {
-        const text = isRemoteDriverSession(driver)
-          ? await (driver as Client).getElementText(args.elementUUID)
-          : await (driver as any).getText(args.elementUUID);
+        const text = getElementText(driver, args.elementUUID);
         return {
           content: [
             {

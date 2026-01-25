@@ -6,6 +6,7 @@ import {
   createPageSourceInspectorUI,
   addUIResourceToResponse,
 } from '../../ui/mcp-ui-utils.js';
+import { getPageSource as _getPageSource } from '../../command.js';
 
 export default function getPageSource(server: FastMCP): void {
   server.addTool({
@@ -23,8 +24,7 @@ export default function getPageSource(server: FastMCP): void {
       }
 
       try {
-        const pageSource = await (driver as any).getPageSource();
-
+        const pageSource = await _getPageSource(driver);
         if (!pageSource) {
           throw new Error('Page source is empty or null');
         }
