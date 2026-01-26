@@ -1,3 +1,9 @@
+## [1.8.16](https://github.com/appium/appium-mcp/compare/v1.8.15...v1.8.16) (2026-01-26)
+
+### Bug Fixes
+
+* publish src as well since mcp read documentation under that ([687cd71](https://github.com/appium/appium-mcp/commit/687cd711bdf85766f437aad3654bb978f4119bde))
+
 ## [1.8.15](https://github.com/appium/appium-mcp/compare/v1.8.14...v1.8.15) (2026-01-26)
 
 ### Bug Fixes
