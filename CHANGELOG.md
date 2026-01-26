@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/appium/appium-mcp/compare/v1.9.0...v1.9.1) (2026-01-26)
+
+### Miscellaneous Chores
+
+* remove unused opentelemetry ([#134](https://github.com/appium/appium-mcp/issues/134)) ([51dcf10](https://github.com/appium/appium-mcp/commit/51dcf1071c2c9149e186501125a4afb1b740b9ce))
+
 ## [1.9.0](https://github.com/appium/appium-mcp/compare/v1.8.16...v1.9.0) (2026-01-26)
 
 ### Features
