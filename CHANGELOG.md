@@ -1,3 +1,9 @@
+## [1.8.15](https://github.com/appium/appium-mcp/compare/v1.8.14...v1.8.15) (2026-01-26)
+
+### Bug Fixes
+
+* add @langchain/core explicitly ([#131](https://github.com/appium/appium-mcp/issues/131)) ([d0ff1ba](https://github.com/appium/appium-mcp/commit/d0ff1ba42fcc88301735eb1c53f722c1953f48db))
+
 ## [1.8.14](https://github.com/appium/appium-mcp/compare/v1.8.13...v1.8.14) (2026-01-25)
 
 ### Miscellaneous Chores
