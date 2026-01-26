@@ -81,6 +81,7 @@
   },
   "files": [
     "scripts",
+    "src",
     "dist",
     "CHANGELOG.md",
     "README.md",
