@@ -1,3 +1,9 @@
+## [1.11.0](https://github.com/appium/appium-mcp/compare/v1.10.0...v1.11.0) (2026-01-29)
+
+### Features
+
+* bump the embedded uia2/xcuitest driver versions to the latest ([#151](https://github.com/appium/appium-mcp/issues/151)) ([994ddc2](https://github.com/appium/appium-mcp/commit/994ddc20a19bc69cd9e4787514eec2020b1c6f49))
+
 ## [1.10.0](https://github.com/appium/appium-mcp/compare/v1.9.3...v1.10.0) (2026-01-28)
 
 ### Features
