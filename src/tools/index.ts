@@ -43,6 +43,11 @@ import terminateApp from './app-management/terminate-app.js';
 import listApps from './app-management/list-apps.js';
 import getContexts from './context/get-contexts.js';
 import switchContext from './context/switch-context.js';
+import startLogBroadcast from './logs/start-log-broadcast.js';
+import stopLogBroadcast from './logs/stop-log-broadcast.js';
+import getLogs from './logs/get-logs.js';
+import clearLogBuffer from './logs/clear-log-buffer.js';
+import listLogSessions from './logs/list-log-sessions.js';
 
 export default function registerTools(server: FastMCP): void {
   // Wrap addTool to inject logging around tool execution
@@ -148,6 +153,13 @@ export default function registerTools(server: FastMCP): void {
   // Context Management
   getContexts(server);
   switchContext(server);
+
+  // Device Logs
+  startLogBroadcast(server);
+  stopLogBroadcast(server);
+  getLogs(server);
+  clearLogBuffer(server);
+  listLogSessions(server);
 
   // Test Generation
   generateLocators(server);
